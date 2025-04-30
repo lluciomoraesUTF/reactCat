@@ -3,9 +3,9 @@ import { createSlice } from '@reduxjs/toolkit';
 const buscaSlice = createSlice({
   name: 'busca',
   initialState: {
-    termo: '',        
-    resultados: [],   
- },
+    termo: '',
+    resultados: [],
+  },
   reducers: {
     definirTermo: (state, action) => {
       state.termo = action.payload;
