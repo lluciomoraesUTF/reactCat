@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 function ResultadoBusca() {
   const resultados = useSelector((state) => state.busca.resultados);
 
-  if (resultados.length === 0) {
+  if (!Array.isArray(resultados) || resultados.length === 0) {
     return <p>Nenhum resultado encontrado.</p>;
   }
 

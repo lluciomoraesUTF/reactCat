@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { definirTermo, definirResultados } from '../contexts/sliceBusca';
+import { setQuery, setResultados, setRacas } from '../contexts/sliceBusca';
 
 function FormularioBusca() {
   const [valorInput, setValorInput] = useState('');
@@ -17,7 +17,7 @@ function FormularioBusca() {
 
       if (!raçaEncontrada) {
         alert('Raça não encontrada!');
-        dispatch(definirResultados([]));
+        dispatch(setResultados([]));
         return;
       }
 
@@ -25,10 +25,10 @@ function FormularioBusca() {
         `https://api.thecatapi.com/v1/images/search?limit=5&breed_ids=${raçaEncontrada.id}`
       );
       const imagens = await respostaImagens.json();
-      dispatch(definirResultados(imagens));
+      dispatch(setResultados(imagens));
     } catch (erro) {
       alert('Erro ao buscar imagens');
-      dispatch(definirResultados([]));
+      dispatch(setResultados([]));
     }
   };
 
@@ -38,7 +38,7 @@ function FormularioBusca() {
       alert('Digite uma raça para buscar!');
       return;
     }
-    dispatch(definirTermo(valorInput));
+    dispatch(setQuery(valorInput));
     buscarPorRaça(valorInput);
   };
 

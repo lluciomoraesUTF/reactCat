@@ -1,20 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const buscaSlice = createSlice({
+const sliceBusca = createSlice({
   name: 'busca',
   initialState: {
-    termo: '',
+    query: '',
     resultados: [],
+    racas: [], 
   },
   reducers: {
-    definirTermo: (state, action) => {
-      state.termo = action.payload;
+    setQuery: (state, action) => {
+      state.query = action.payload;
     },
-    definirResultados: (state, action) => {
+    setResultados: (state, action) => {
       state.resultados = action.payload;
+    },
+    setRacas: (state, action) => {
+      state.racas = action.payload;
     },
   },
 });
 
-export const { definirTermo, definirResultados } = buscaSlice.actions;
-export default buscaSlice.reducer;
+export const { setQuery, setResultados, setRacas } = sliceBusca.actions;
+export default sliceBusca.reducer;
