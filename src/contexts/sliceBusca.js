@@ -5,7 +5,8 @@ const sliceBusca = createSlice({
   initialState: {
     query: '',
     resultados: [],
-    racas: [], 
+    racas: [],
+    fotos: [],
   },
   reducers: {
     setQuery: (state, action) => {
@@ -17,8 +18,11 @@ const sliceBusca = createSlice({
     setRacas: (state, action) => {
       state.racas = action.payload;
     },
+    setFotos: (state, action) => {
+      state.fotos = action.payload;
+    },
   },
 });
 
-export const { setQuery, setResultados, setRacas } = sliceBusca.actions;
+export const { setQuery, setResultados, setRacas, setFotos } = sliceBusca.actions;
 export default sliceBusca.reducer;

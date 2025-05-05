@@ -6,7 +6,6 @@ import tema from './contexts/tema';
 
 import FormularioBusca from './components/formularioBusca';
 import ListaGatos from './components/listaGatos';
-import ResultadoBusca from './components/resultadoBusca';
 
 function App() {
   return (
@@ -21,7 +20,6 @@ function App() {
           </Box>
 
           <FormularioBusca />
-          <ResultadoBusca />
           <ListaGatos />
         </Container>
       </ThemeProvider>

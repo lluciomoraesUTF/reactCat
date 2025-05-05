@@ -1,57 +1,49 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setQuery, setResultados, setRacas } from '../contexts/sliceBusca';
+import { setQuery, setResultados, setFotos } from '../contexts/sliceBusca';
+import { Box, TextField, Button } from '@mui/material';
 
 function FormularioBusca() {
-  const [valorInput, setValorInput] = useState('');
+  const [busca, setBusca] = useState('');
   const dispatch = useDispatch();
 
-  const buscarPorRaça = async (raça) => {
+  async function buscar() {
+    dispatch(setQuery(busca));
+
     try {
-      const respostaRaças = await fetch('https://api.thecatapi.com/v1/breeds');
-      const raças = await respostaRaças.json();
-
-      const raçaEncontrada = raças.find((r) =>
-        r.name.toLowerCase().includes(raça.toLowerCase())
+      const resposta = await fetch('https://api.thecatapi.com/v1/breeds');
+      const dados = await resposta.json();
+      const resultadoFiltrado = dados.filter((r) =>
+        r.name.toLowerCase().includes(busca.toLowerCase())
       );
+      dispatch(setResultados(resultadoFiltrado));
 
-      if (!raçaEncontrada) {
-        alert('Raça não encontrada!');
-        dispatch(setResultados([]));
-        return;
+      if (resultadoFiltrado.length > 0) {
+        const id = resultadoFiltrado[0].id;
+        const resFotos = await fetch(
+          `https://api.thecatapi.com/v1/images/search?breed_ids=${id}&limit=5`
+        );
+        const fotosJson = await resFotos.json();
+        dispatch(setFotos(fotosJson));
       }
-
-      const respostaImagens = await fetch(
-        `https://api.thecatapi.com/v1/images/search?limit=5&breed_ids=${raçaEncontrada.id}`
-      );
-      const imagens = await respostaImagens.json();
-      dispatch(setResultados(imagens));
     } catch (erro) {
-      alert('Erro ao buscar imagens');
-      dispatch(setResultados([]));
+      console.error('Erro ao buscar raça:', erro);
     }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (valorInput.trim() === '') {
-      alert('Digite uma raça para buscar!');
-      return;
-    }
-    dispatch(setQuery(valorInput));
-    buscarPorRaça(valorInput);
-  };
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Digite uma raça de gato (ex: bengal)"
-        value={valorInput}
-        onChange={(e) => setValorInput(e.target.value)}
+    <Box display="flex" alignItems="center" gap={2}>
+      <TextField
+        label="Buscar raça"
+        variant="outlined"
+        value={busca}
+        onChange={(e) => setBusca(e.target.value)}
+        size="small"
       />
-      <button type="submit">Buscar</button>
-    </form>
+      <Button onClick={buscar} variant="contained" color="primary">
+        Buscar
+      </Button>
+    </Box>
   );
 }
 
